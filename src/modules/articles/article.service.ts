@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Article, ArticleDocument } from './article.schema';
 import ArticleCreateDto from './dtos/article-create.dto';
+import ArticleUpdateDto from './dtos/article-update.dto';
 
 @Injectable()
 export default class ArticleService {
@@ -35,6 +36,29 @@ export default class ArticleService {
       const newArticle = new this.model(dto);
 
       return await newArticle.save();
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async update(id: string, dto: ArticleUpdateDto) {
+    const articleObjectId = new Types.ObjectId(id);
+    try {
+      await this.model.updateOne(
+        {
+          _id: articleObjectId,
+        },
+        {
+          $set: dto,
+        },
+      );
+      const updatedArticle = await this.model
+        .findOne({
+          _id: articleObjectId,
+        })
+        .exec();
+
+      return updatedArticle;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

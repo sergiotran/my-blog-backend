@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import ArticleModule from './modules/articles/article.module';
+import AuthModule from './modules/auth/auth.module';
 import CategoryModule from './modules/categories/category.module';
 
 @Module({
@@ -10,6 +11,7 @@ import CategoryModule from './modules/categories/category.module';
     MongooseModule.forRoot('mongodb://localhost/nest'),
     ArticleModule,
     CategoryModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
