@@ -9,6 +9,7 @@ export class Category {
   @Prop({
     type: SchemaTypes.String,
     required: true,
+    unique: true,
   })
   name: string;
 
@@ -25,6 +26,17 @@ export class Category {
     unique: true,
   })
   slug: string;
+
+  @Prop([
+    {
+      type: SchemaTypes.ObjectId,
+      ref: Article,
+      index: {
+        unique: false,
+      },
+    },
+  ])
+  articles: Article[];
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

@@ -13,7 +13,6 @@ export default class CategoryController {
 
   @Post('create')
   async create(@Body() dto: CategoryCreateDto) {
-    console.log('dto', dto);
     return await this.service.create(dto);
   }
 }
