@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import RegisterDto from '../auth/dtos/register.dto';
 import User, { UserDocument } from './user.schema';
 import * as bcrypt from 'bcrypt';
@@ -24,6 +24,24 @@ class UserService {
     }
 
     return user;
+  }
+
+  async findOneById(id: string) {
+    const idObject = new Types.ObjectId(id);
+    const user = await this.model
+      .findOne({
+        _id: idObject,
+      })
+      .exec();
+
+    if (!user) {
+      throw new HttpException('User not found!', HttpStatus.NOT_FOUND);
+    }
+
+    const res = await user.toJSON();
+    delete res.passwd;
+
+    return res;
   }
 
   async create(user: RegisterDto) {
