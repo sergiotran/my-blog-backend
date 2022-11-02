@@ -1,4 +1,4 @@
-import { Category } from 'src/modules/categories/category.schema';
+import { Category } from 'src/categories/category.schema';
 
 export default class ArticleCreateDto {
   title: string;
